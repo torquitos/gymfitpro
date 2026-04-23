@@ -362,6 +362,101 @@ section:nth-child(even) { background: var(--gris-light); }
   gap: 24px;
 }
 
+/* --- 10.5. PANEL USUARIO --- */
+.perfil-panel {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr;
+  gap: 20px;
+}
+
+.perfil-card {
+  background: var(--blanco);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio-lg);
+  padding: 28px;
+  box-shadow: var(--sombra);
+}
+
+.perfil-card h3 {
+  font-size: 22px;
+  margin-bottom: 10px;
+  color: var(--texto);
+}
+
+.perfil-card p {
+  font-size: 14px;
+  color: var(--texto-suave);
+}
+
+.perfil-mini-label {
+  font-size: 12px;
+  color: var(--texto-suave);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+
+.perfil-main-name {
+  font-size: 28px;
+  font-weight: 800;
+  line-height: 1.2;
+  margin-bottom: 8px;
+  color: var(--texto);
+}
+
+.perfil-email {
+  font-size: 14px;
+  color: var(--texto-suave);
+  margin-bottom: 18px;
+}
+
+.perfil-plan-badge {
+  display: inline-block;
+  background: var(--rojo-light);
+  color: var(--rojo-dark);
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.perfil-stat-value {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--rojo);
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.perfil-stat-text {
+  font-size: 14px;
+  color: var(--texto-suave);
+}
+
+.perfil-empty {
+  grid-column: 1 / -1;
+  text-align: center;
+}
+
+.btn-cancelar-reserva {
+  margin-top: 14px;
+  width: 100%;
+  border: 1px solid #f3b2b7;
+  background: #fff5f6;
+  color: #b42318;
+  border-radius: var(--radio);
+  padding: 10px 14px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background var(--transicion), border-color var(--transicion);
+}
+
+.btn-cancelar-reserva:hover {
+  background: #ffe9eb;
+  border-color: #e98b95;
+}
+
 .entrenador-card {
   background: var(--blanco);
   border: 1px solid var(--borde);
@@ -548,6 +643,7 @@ footer p { font-size: 13px; color: rgba(255,255,255,0.45); }
   .nav-links { display: none; }
   .hero-content h1 { font-size: 36px; }
   .contacto-grid { grid-template-columns: 1fr; }
+  .perfil-panel { grid-template-columns: 1fr; }
   section { padding: 64px 0; }
   .section-header h2 { font-size: 26px; }
 }

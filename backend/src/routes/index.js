@@ -347,6 +347,56 @@ router.get('/reservas/:usuarioId', async (req, res) => {
   }
 });
 
+router.patch('/reservas/:reservaId/cancelar', async (req, res) => {
+  try {
+    const reservaId = Number(req.params.reservaId);
+
+    if (!reservaId) {
+      return res.status(400).json({
+        ok: false,
+        message: 'La reserva es obligatoria'
+      });
+    }
+
+    const [reservas] = await pool.query(
+      'SELECT id, estado FROM reservas WHERE id = ? LIMIT 1',
+      [reservaId]
+    );
+
+    if (reservas.length === 0) {
+      return res.status(404).json({
+        ok: false,
+        message: 'La reserva no existe'
+      });
+    }
+
+    if (reservas[0].estado === 'cancelada') {
+      return res.status(409).json({
+        ok: false,
+        message: 'Esta reserva ya fue cancelada'
+      });
+    }
+
+    await pool.query(
+      `UPDATE reservas
+       SET estado = 'cancelada'
+       WHERE id = ?`,
+      [reservaId]
+    );
+
+    return res.json({
+      ok: true,
+      message: 'Reserva cancelada correctamente'
+    });
+  } catch (error) {
+    return res.status(500).json({
+      ok: false,
+      message: 'No se pudo cancelar la reserva',
+      error: error.message
+    });
+  }
+});
+
 router.get('/modules', (req, res) => {
   res.json({
     projectModules: [

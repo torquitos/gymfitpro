@@ -128,8 +128,48 @@ function renderizarReservas(reservas, loggedIn) {
       <p><strong>Entrenador:</strong> ${reserva.entrenador || 'Por asignar'}</p>
       <p><strong>Nivel:</strong> ${reserva.nivel || 'Todos'}</p>
       <p><strong>Estado:</strong> ${reserva.estado}</p>
+      ${reserva.estado === 'activa' ? `
+        <button class="btn-cancelar-reserva" onclick="cancelarReserva(${reserva.id})">
+          Cancelar reserva
+        </button>
+      ` : ''}
     </div>
   `).join('');
+}
+
+function renderizarPerfilUsuario(sesion, reservas = []) {
+  const contenedor = document.getElementById('perfil-usuario');
+
+  if (!contenedor) return;
+
+  if (!sesion || !sesion.id) {
+    contenedor.innerHTML = `
+      <div class="perfil-card perfil-empty">
+        <h3>Inicia sesion para ver tu perfil</h3>
+        <p>Cuando entres con tu cuenta, aqui apareceran tus datos principales.</p>
+      </div>`;
+    return;
+  }
+
+  const reservasActivas = reservas.filter(reserva => reserva.estado === 'activa').length;
+
+  contenedor.innerHTML = `
+    <div class="perfil-card">
+      <div class="perfil-mini-label">Cliente GymFitPro</div>
+      <div class="perfil-main-name">${sesion.nombre}</div>
+      <div class="perfil-email">${sesion.email}</div>
+      <span class="perfil-plan-badge">Plan ${sesion.plan}</span>
+    </div>
+    <div class="perfil-card">
+      <div class="perfil-mini-label">Reservas activas</div>
+      <div class="perfil-stat-value">${reservasActivas}</div>
+      <div class="perfil-stat-text">Clases apartadas con tu cuenta en este momento.</div>
+    </div>
+    <div class="perfil-card">
+      <div class="perfil-mini-label">Estado de cuenta</div>
+      <div class="perfil-stat-value">Activa</div>
+      <div class="perfil-stat-text">Tu membresia esta disponible para seguir reservando clases.</div>
+    </div>`;
 }
 
 async function cargarHorarios() {
@@ -152,6 +192,7 @@ async function cargarMisReservas() {
   const sesion = JSON.parse(localStorage.getItem('gymfitpro_sesion') || 'null');
 
   if (!sesion || !sesion.id) {
+    renderizarPerfilUsuario(null, []);
     renderizarReservas([], false);
     return;
   }
@@ -161,12 +202,15 @@ async function cargarMisReservas() {
     const data = await response.json();
 
     if (!response.ok) {
+      renderizarPerfilUsuario(sesion, []);
       renderizarReservas([], true);
       return;
     }
 
+    renderizarPerfilUsuario(sesion, data.reservas || []);
     renderizarReservas(data.reservas || [], true);
   } catch (error) {
+    renderizarPerfilUsuario(sesion, []);
     renderizarReservas([], true);
   }
 }
@@ -329,6 +373,30 @@ async function reservarClase(horarioId) {
     }
 
     alert('Reserva realizada correctamente.');
+    cargarMisReservas();
+  } catch (error) {
+    alert('No se pudo conectar con el servidor.');
+  }
+}
+
+async function cancelarReserva(reservaId) {
+  const confirmar = window.confirm('¿Seguro que quieres cancelar esta reserva?');
+
+  if (!confirmar) return;
+
+  try {
+    const response = await fetch(`${API_BASE_URL}/reservas/${reservaId}/cancelar`, {
+      method: 'PATCH'
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      alert(data.message || 'No se pudo cancelar la reserva.');
+      return;
+    }
+
+    alert('Reserva cancelada correctamente.');
     cargarMisReservas();
   } catch (error) {
     alert('No se pudo conectar con el servidor.');
