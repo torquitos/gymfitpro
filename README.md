@@ -224,9 +224,9 @@ Abre `frontend/Index.html` con **Live Server** desde VS Code, o directamente des
 
 | Rol | Nombre |
 |---|---|
-| Desarrollador fullstack | *(tu nombre aquí)* |
-| Institución | *(nombre de tu institución)* |
-| Asesor / Director | *(nombre del asesor si aplica)* |
+| Desarrollador fullstack | Walter ramirez |
+| Institución | Sena |
+
 
 ---
 
