@@ -65,10 +65,25 @@ CREATE TABLE IF NOT EXISTS mensajes_contacto (
 );
 
 INSERT INTO planes (nombre, precio, descripcion, duracion_meses)
-VALUES
-  ('Basico', 49900, 'Acceso a sala de pesas de lunes a viernes', 1),
-  ('Pro', 79900, 'Incluye clases grupales y una sesion con coach', 1),
-  ('Elite', 119900, 'Incluye coach personalizado, nutricion y zona humeda', 1);
+SELECT 'Basico', 49900, 'Acceso a sala de pesas de lunes a viernes', 1
+WHERE NOT EXISTS (SELECT 1 FROM planes WHERE nombre = 'Basico');
+
+INSERT INTO planes (nombre, precio, descripcion, duracion_meses)
+SELECT 'Pro', 79900, 'Incluye clases grupales y una sesion con coach', 1
+WHERE NOT EXISTS (SELECT 1 FROM planes WHERE nombre = 'Pro');
+
+INSERT INTO planes (nombre, precio, descripcion, duracion_meses)
+SELECT 'Elite', 119900, 'Incluye coach personalizado, nutricion y zona humeda', 1
+WHERE NOT EXISTS (SELECT 1 FROM planes WHERE nombre = 'Elite');
+
+INSERT INTO usuarios (nombre_completo, email, password_hash, rol, plan_id)
+SELECT 'Administrador GymFitPro', 'admin@gymfitpro.co',
+  '240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9',
+  'admin',
+  (SELECT id FROM planes WHERE nombre = 'Elite' LIMIT 1)
+WHERE NOT EXISTS (
+  SELECT 1 FROM usuarios WHERE email = 'admin@gymfitpro.co'
+);
 
 INSERT INTO entrenadores (nombre, especialidad, experiencia_anios, descripcion, horario_base)
 SELECT 'Laura Mejia', 'Yoga', 8, 'Especialista en yoga y mindfulness', 'Lunes, Miercoles y Viernes'

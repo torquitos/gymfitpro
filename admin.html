@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GymFitPro Admin</title>
+  <link rel="stylesheet" href="Styles.css" />
+</head>
+<body class="admin-body">
+  <nav class="admin-navbar">
+    <a href="Index.html#hero" class="logo">GymFit<span>Pro</span> Admin</a>
+    <div class="admin-nav-actions">
+      <a href="Index.html" class="btn-login">Volver al sitio</a>
+      <button class="btn-registro" onclick="cerrarSesionAdmin()">Cerrar sesion</button>
+    </div>
+  </nav>
+
+  <main class="admin-main">
+    <section class="admin-hero">
+      <span class="badge">Administracion</span>
+      <h1>Panel de control</h1>
+      <p>Consulta un resumen general del gimnasio y el movimiento reciente de la plataforma.</p>
+    </section>
+
+    <section id="admin-alerta" class="admin-alerta hidden"></section>
+
+    <section id="admin-bienvenida" class="admin-welcome-card">
+      <div>
+        <div class="perfil-mini-label">Administrador conectado</div>
+        <h2>Cargando panel...</h2>
+        <p>Estamos consultando la informacion del sistema.</p>
+      </div>
+    </section>
+
+    <section id="admin-resumen" class="admin-stats-grid">
+      <article class="admin-stat-card">
+        <div class="perfil-mini-label">Clientes</div>
+        <div class="perfil-stat-value">--</div>
+        <p>Usuarios registrados en el sistema.</p>
+      </article>
+      <article class="admin-stat-card">
+        <div class="perfil-mini-label">Reservas activas</div>
+        <div class="perfil-stat-value">--</div>
+        <p>Clases actualmente apartadas.</p>
+      </article>
+      <article class="admin-stat-card">
+        <div class="perfil-mini-label">Horarios</div>
+        <div class="perfil-stat-value">--</div>
+        <p>Clases publicadas en la agenda.</p>
+      </article>
+      <article class="admin-stat-card">
+        <div class="perfil-mini-label">Mensajes pendientes</div>
+        <div class="perfil-stat-value">--</div>
+        <p>Contactos que aun no han sido atendidos.</p>
+      </article>
+    </section>
+
+    <section class="admin-grid">
+      <article class="admin-panel-card admin-panel-card-list">
+        <div class="section-header admin-section-header">
+          <span class="badge">Actividad</span>
+          <h2>Ultimas reservas</h2>
+          <p>Movimiento reciente de clases apartadas por usuarios.</p>
+        </div>
+        <div id="admin-reservas" class="admin-list"></div>
+      </article>
+
+      <article class="admin-panel-card admin-panel-card-list">
+        <div class="section-header admin-section-header">
+          <span class="badge">Contacto</span>
+          <h2>Mensajes recientes</h2>
+          <p>Consultas enviadas desde el formulario del sitio.</p>
+        </div>
+        <div id="admin-mensajes" class="admin-list"></div>
+      </article>
+    </section>
+
+    <section class="admin-grid admin-grid-large">
+      <article class="admin-panel-card admin-panel-card-form">
+        <div class="section-header admin-section-header">
+          <span class="badge">CRUD</span>
+          <h2>Crear horario</h2>
+          <p>Agrega nuevas clases para que aparezcan luego en la pagina publica.</p>
+        </div>
+        <form id="admin-horario-form" class="admin-form">
+          <input type="text" id="horario-clase" placeholder="Nombre de la clase" required />
+          <select id="horario-dia" required>
+            <option value="">Selecciona un dia</option>
+            <option value="Lunes">Lunes</option>
+            <option value="Martes">Martes</option>
+            <option value="Miercoles">Miercoles</option>
+            <option value="Jueves">Jueves</option>
+            <option value="Viernes">Viernes</option>
+            <option value="Sabado">Sabado</option>
+            <option value="Domingo">Domingo</option>
+          </select>
+          <div class="admin-form-row">
+            <input type="time" id="horario-inicio" required />
+            <input type="time" id="horario-fin" required />
+          </div>
+          <div class="admin-form-row">
+            <input type="text" id="horario-nivel" placeholder="Nivel (Todos, Intermedio...)" />
+            <input type="number" id="horario-cupos" placeholder="Cupos" min="1" required />
+          </div>
+          <select id="horario-entrenador">
+            <option value="">Selecciona un entrenador</option>
+          </select>
+          <button type="submit" class="btn-primary">Guardar horario</button>
+        </form>
+      </article>
+
+      <article class="admin-panel-card admin-panel-card-list">
+        <div class="section-header admin-section-header">
+          <span class="badge">Gestion</span>
+          <h2>Horarios creados</h2>
+          <p>Estos son los horarios disponibles actualmente en la base de datos.</p>
+        </div>
+        <div id="admin-horarios-lista" class="admin-list"></div>
+      </article>
+    </section>
+
+    <section class="admin-grid admin-grid-large">
+      <article class="admin-panel-card admin-panel-card-list">
+        <div class="section-header admin-section-header">
+          <span class="badge">Usuarios</span>
+          <h2>Usuarios registrados</h2>
+          <p>Consulta las cuentas creadas y cambia el plan de cada usuario.</p>
+        </div>
+        <div id="admin-usuarios-lista" class="admin-list"></div>
+      </article>
+
+      <article class="admin-panel-card admin-panel-card-list">
+        <div class="section-header admin-section-header">
+          <span class="badge">Entrenadores</span>
+          <h2>Editar entrenadores</h2>
+          <p>Actualiza su especialidad, experiencia, descripcion y horario base.</p>
+        </div>
+        <form id="admin-entrenador-form" class="admin-form admin-form-card">
+          <input type="text" id="nuevo-entrenador-nombre" placeholder="Nombre del entrenador" required />
+          <input type="text" id="nuevo-entrenador-especialidad" placeholder="Especialidad" required />
+          <div class="admin-form-row">
+            <input type="number" id="nuevo-entrenador-experiencia" placeholder="Años de experiencia" min="0" />
+            <input type="text" id="nuevo-entrenador-horario" placeholder="Horario base" />
+          </div>
+          <textarea id="nuevo-entrenador-descripcion" class="admin-textarea" rows="3" placeholder="Descripcion del entrenador"></textarea>
+          <button type="submit" class="btn-primary">Crear entrenador</button>
+        </form>
+        <div id="admin-entrenadores-lista" class="admin-list"></div>
+      </article>
+    </section>
+
+    <section class="admin-grid admin-grid-large">
+      <article class="admin-panel-card admin-panel-card-form">
+        <div class="section-header admin-section-header">
+          <span class="badge">Planes</span>
+          <h2>Crear plan</h2>
+          <p>Agrega nuevos planes para ofrecerlos a tus usuarios.</p>
+        </div>
+        <form id="admin-plan-form" class="admin-form admin-form-card">
+          <input type="text" id="nuevo-plan-nombre" placeholder="Nombre del plan" required />
+          <div class="admin-form-row">
+            <input type="number" id="nuevo-plan-precio" placeholder="Precio" min="1" required />
+            <input type="number" id="nuevo-plan-duracion" placeholder="Duracion (meses)" min="1" required />
+          </div>
+          <div class="admin-features-block">
+            <div class="admin-features-header">
+              <strong>Caracteristicas del plan</strong>
+              <button type="button" class="btn-admin-secondary" onclick="agregarCaracteristicaNuevoPlan()">Agregar caracteristica</button>
+            </div>
+            <div id="nuevo-plan-caracteristicas" class="admin-features-list"></div>
+          </div>
+          <button type="submit" class="btn-primary">Crear plan</button>
+        </form>
+      </article>
+
+      <article class="admin-panel-card admin-panel-card-list">
+        <div class="section-header admin-section-header">
+          <span class="badge">Gestion</span>
+          <h2>Planes del gimnasio</h2>
+          <p>Edita, desactiva o elimina los planes disponibles.</p>
+        </div>
+        <div id="admin-planes-lista" class="admin-list"></div>
+      </article>
+    </section>
+  </main>
+
+  <script src="admin.js"></script>
+</body>
+</html>

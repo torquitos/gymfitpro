@@ -4,13 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>GymFitPro</title>
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="Styles.css" />
 </head>
 <body>
 
-  <!-- ===== NAVBAR ===== -->
   <nav id="navbar">
-    <div class="logo">GymFit<span>Pro</span></div>
+    <a href="#hero" class="logo">GymFit<span>Pro</span></a>
     <ul class="nav-links">
       <li><a href="#planes">Planes</a></li>
       <li><a href="#servicios">Servicios</a></li>
@@ -19,53 +18,104 @@
       <li><a href="#contacto">Contacto</a></li>
     </ul>
     <div class="nav-auth">
-      <button class="btn-login" onclick="mostrarModal('login')">Iniciar sesión</button>
-      <button class="btn-registro" onclick="mostrarModal('registro')">Regístrate</button>
+      <button class="btn-login" onclick="mostrarModal('login')">Iniciar sesion</button>
+      <button class="btn-registro" onclick="mostrarModal('registro')">Registrate</button>
     </div>
   </nav>
 
-  <!-- ===== HERO ===== -->
   <section id="hero">
-    <div class="hero-content">
-      <h1>Forja tu mejor <span>versión</span></h1>
-      <p>Equipos de última generación, entrenadores certificados
-         y planes pensados para cada nivel.</p>
-      <div class="hero-btns">
-        <button class="btn-primary" onclick="mostrarModal('registro')">Empieza hoy</button>
-        <a href="#planes" class="btn-outline">Ver planes</a>
+    <div class="container hero-shell">
+      <div class="hero-content">
+        <span class="hero-eyebrow">Entrenamiento inteligente en Armenia</span>
+        <h1>Forja tu mejor <span>version</span></h1>
+        <p>Una experiencia de gimnasio moderna con clases, planes flexibles, entrenadores certificados y reservas en linea desde un solo lugar.</p>
+        <div class="hero-btns">
+          <button class="btn-primary" onclick="mostrarModal('registro')">Empieza hoy</button>
+          <a href="#planes" class="btn-outline">Ver planes</a>
+        </div>
+        <div class="hero-highlights">
+          <div class="hero-highlight">
+            <strong>+4</strong>
+            <span>disciplinas activas</span>
+          </div>
+          <div class="hero-highlight">
+            <strong>7 dias</strong>
+            <span>de opciones para entrenar</span>
+          </div>
+          <div class="hero-highlight">
+            <strong>100%</strong>
+            <span>gestionado desde la plataforma</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-aside">
+        <div class="hero-card hero-card-main">
+          <span class="badge">Rutina destacada</span>
+          <h3>Entrena con objetivos claros</h3>
+          <p>Combina musculacion, clases guiadas y seguimiento de reservas para mantener constancia semanal.</p>
+          <ul class="hero-card-list">
+            <li>Reserva clases en segundos</li>
+            <li>Administra tu plan y tus sesiones</li>
+            <li>Encuentra horarios segun tu nivel</li>
+          </ul>
+        </div>
+
+        <div class="hero-card hero-card-mini">
+          <div>
+            <span class="hero-mini-label">Horario de atencion</span>
+            <strong>Lun a Sab · 5:00 am a 10:00 pm</strong>
+          </div>
+          <div class="hero-mini-pill">Abierto</div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- ===== PLANES ===== -->
+  <section class="quick-strip">
+    <div class="container quick-strip-grid">
+      <article class="quick-strip-card">
+        <span class="quick-strip-title">Planes flexibles</span>
+        <p>Opciones mensuales para principiantes, intermedios y usuarios premium.</p>
+      </article>
+      <article class="quick-strip-card">
+        <span class="quick-strip-title">Reservas online</span>
+        <p>Los usuarios pueden apartar y cancelar clases desde su panel sin hacer filas.</p>
+      </article>
+      <article class="quick-strip-card">
+        <span class="quick-strip-title">Equipo profesional</span>
+        <p>Entrenadores con experiencia en yoga, boxeo, funcional y cardio.</p>
+      </article>
+    </div>
+  </section>
+
   <section id="planes">
     <div class="container">
       <div class="section-header">
-        <span class="badge">Membresías</span>
+        <span class="badge">Membresias</span>
         <h2>Elige tu plan</h2>
-        <p>Sin contratos. Cancela cuando quieras.</p>
+        <p>Elige la membresia que mejor encaja con tu ritmo y deja que la plataforma haga el resto.</p>
       </div>
-      <div class="planes-grid">
-
+      <div id="planes-grid" class="planes-grid">
         <div class="plan-card">
-          <h3>Básico</h3>
+          <h3>Basico</h3>
           <div class="precio">$49.900<span>/mes</span></div>
           <ul>
             <li>Acceso sala de pesas</li>
-            <li>Lunes a Viernes</li>
+            <li>Lunes a viernes</li>
             <li>Vestuarios y duchas</li>
           </ul>
           <button class="btn-plan" onclick="mostrarModal('registro')">Elegir plan</button>
         </div>
 
         <div class="plan-card featured">
-          <div class="popular-tag">Más popular</div>
+          <div class="popular-tag">Mas popular</div>
           <h3>Pro</h3>
           <div class="precio">$79.900<span>/mes</span></div>
           <ul>
-            <li>Acceso 7 días</li>
+            <li>Acceso 7 dias</li>
             <li>Clases grupales incluidas</li>
-            <li>1 sesión con coach</li>
+            <li>1 sesion con coach</li>
             <li>App de seguimiento</li>
           </ul>
           <button class="btn-plan" onclick="mostrarModal('registro')">Elegir plan</button>
@@ -78,72 +128,69 @@
             <li>Todo lo del plan Pro</li>
             <li>Coach personalizado</li>
             <li>Plan nutricional</li>
-            <li>Acceso piscina y spa</li>
+            <li>Acceso zona premium</li>
           </ul>
           <button class="btn-plan" onclick="mostrarModal('registro')">Elegir plan</button>
         </div>
-
       </div>
     </div>
   </section>
 
-  <!-- ===== SERVICIOS ===== -->
   <section id="servicios">
     <div class="container">
       <div class="section-header">
         <span class="badge">Servicios</span>
-        <h2>Lo que ofrecemos</h2>
-        <p>Todo lo que necesitas bajo un mismo techo.</p>
+        <h2>Mucho mas que maquinas</h2>
+        <p>GymFitPro combina entrenamiento, acompanamiento y gestion digital para una experiencia mas completa.</p>
       </div>
       <div class="servicios-grid">
         <div class="servicio-card">
-          <div class="servicio-icon">🏋️</div>
-          <h4>Musculación</h4>
-          <p>Sala con equipos de última generación.</p>
+          <div class="servicio-icon">MS</div>
+          <h4>Musculacion</h4>
+          <p>Sala de fuerza con equipos modernos y zonas bien distribuidas.</p>
         </div>
         <div class="servicio-card">
-          <div class="servicio-icon">🧘</div>
+          <div class="servicio-icon">YG</div>
           <h4>Yoga</h4>
-          <p>Clases diarias para cuerpo y mente.</p>
+          <p>Sesiones guiadas para mejorar movilidad, respiracion y enfoque.</p>
         </div>
         <div class="servicio-card">
-          <div class="servicio-icon">🥊</div>
+          <div class="servicio-icon">BX</div>
           <h4>Boxeo</h4>
-          <p>Ring profesional y entrenadores expertos.</p>
+          <p>Entrenamiento tecnico y funcional con enfoque en potencia y disciplina.</p>
         </div>
         <div class="servicio-card">
-          <div class="servicio-icon">🚴</div>
+          <div class="servicio-icon">SP</div>
           <h4>Spinning</h4>
-          <p>Bicicletas smart con seguimiento en vivo.</p>
+          <p>Clases de alto ritmo para cardio intenso y trabajo de resistencia.</p>
         </div>
         <div class="servicio-card">
-          <div class="servicio-icon">🥗</div>
-          <h4>Nutrición</h4>
-          <p>Plan personalizado con nutricionista.</p>
+          <div class="servicio-icon">NT</div>
+          <h4>Nutricion</h4>
+          <p>Orientacion alimentaria para alinear tus metas con tu progreso fisico.</p>
         </div>
         <div class="servicio-card">
-          <div class="servicio-icon">🏊</div>
-          <h4>Piscina</h4>
-          <p>Acceso incluido en plan Elite.</p>
+          <div class="servicio-icon">RM</div>
+          <h4>Rutinas mixtas</h4>
+          <p>Combina clases, fuerza y seguimiento en una sola membresia.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ===== HORARIOS ===== -->
   <section id="horarios">
     <div class="container">
       <div class="section-header">
         <span class="badge">Horarios</span>
         <h2>Clases de la semana</h2>
-        <p>Planifica tu semana con anticipación.</p>
+        <p>Revisa tu agenda, compara niveles y reserva la sesion que mejor se adapte a tu rutina.</p>
       </div>
       <div class="tabla-wrapper">
         <table class="horarios-tabla">
           <thead>
             <tr>
               <th>Clase</th>
-              <th>Días</th>
+              <th>Dia</th>
               <th>Hora</th>
               <th>Entrenador</th>
               <th>Nivel</th>
@@ -153,31 +200,35 @@
           <tbody id="horarios-body">
             <tr>
               <td><span class="tag-clase yoga">Yoga</span></td>
-              <td>Lun / Mié / Vie</td>
+              <td>Lunes</td>
               <td>7:00 am</td>
-              <td>Laura Mejía</td>
+              <td>Laura Mejia</td>
               <td>Todos</td>
+              <td></td>
             </tr>
             <tr>
               <td><span class="tag-clase spinning">Spinning</span></td>
-              <td>Mar / Jue / Sáb</td>
+              <td>Martes</td>
               <td>6:30 am</td>
-              <td>Carlos Ríos</td>
+              <td>Carlos Rios</td>
               <td>Intermedio</td>
+              <td></td>
             </tr>
             <tr>
               <td><span class="tag-clase boxeo">Boxeo</span></td>
-              <td>Mié / Vie</td>
+              <td>Miercoles</td>
               <td>5:00 pm</td>
-              <td>Andrés Pérez</td>
+              <td>Andres Perez</td>
               <td>Avanzado</td>
+              <td></td>
             </tr>
             <tr>
               <td><span class="tag-clase funcional">Funcional</span></td>
-              <td>Lun a Vie</td>
+              <td>Jueves</td>
               <td>6:00 pm</td>
-              <td>María García</td>
+              <td>Maria Garcia</td>
               <td>Todos</td>
+              <td></td>
             </tr>
           </tbody>
         </table>
@@ -185,7 +236,6 @@
     </div>
   </section>
 
-  <!-- ===== PANEL USUARIO ===== -->
   <section id="panel-usuario">
     <div class="container">
       <div class="section-header">
@@ -202,16 +252,15 @@
     </div>
   </section>
 
-  <!-- ===== MIS RESERVAS ===== -->
   <section id="mis-reservas">
     <div class="container">
       <div class="section-header">
         <span class="badge">Usuario</span>
         <h2>Mis reservas</h2>
-        <p>Consulta las clases que ya reservaste.</p>
+        <p>Consulta las clases que ya reservaste y gestiona tu agenda semanal.</p>
       </div>
-      <div id="reservas-lista" class="servicios-grid">
-        <div class="servicio-card">
+      <div id="reservas-lista" class="reservas-grid">
+        <div class="reserva-card reserva-empty">
           <h4>Inicia sesion para ver tus reservas</h4>
           <p>Aqui apareceran las clases apartadas con tu cuenta.</p>
         </div>
@@ -219,107 +268,104 @@
     </div>
   </section>
 
-  <!-- ===== ENTRENADORES ===== -->
   <section id="entrenadores">
     <div class="container">
       <div class="section-header">
         <span class="badge">Equipo</span>
         <h2>Nuestros entrenadores</h2>
-        <p>Profesionales certificados listos para guiarte.</p>
+        <p>Profesionales que combinan experiencia tecnica, acompanamiento y energia en cada sesion.</p>
       </div>
       <div class="entrenadores-grid">
         <div class="entrenador-card">
           <div class="avatar rojo">LM</div>
-          <h4>Laura Mejía</h4>
+          <h4>Laura Mejia</h4>
           <p>Yoga · Mindfulness</p>
-          <span class="exp">8 años de experiencia</span>
+          <span class="exp">8 anos de experiencia</span>
         </div>
         <div class="entrenador-card">
           <div class="avatar azul">CR</div>
-          <h4>Carlos Ríos</h4>
+          <h4>Carlos Rios</h4>
           <p>Spinning · Cardio</p>
-          <span class="exp">6 años de experiencia</span>
+          <span class="exp">6 anos de experiencia</span>
         </div>
         <div class="entrenador-card">
           <div class="avatar verde">AP</div>
-          <h4>Andrés Pérez</h4>
+          <h4>Andres Perez</h4>
           <p>Boxeo · Fuerza</p>
-          <span class="exp">10 años de experiencia</span>
+          <span class="exp">10 anos de experiencia</span>
         </div>
         <div class="entrenador-card">
           <div class="avatar naranja">MG</div>
-          <h4>María García</h4>
-          <p>Funcional · Nutrición</p>
-          <span class="exp">5 años de experiencia</span>
+          <h4>Maria Garcia</h4>
+          <p>Funcional · Nutricion</p>
+          <span class="exp">5 anos de experiencia</span>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ===== CONTACTO ===== -->
   <section id="contacto">
     <div class="container">
       <div class="section-header">
         <span class="badge">Contacto</span>
-        <h2>Estamos aquí para ti</h2>
-        <p>Visítanos o escríbenos cuando quieras.</p>
+        <h2>Estamos aqui para ti</h2>
+        <p>Agenda tu visita, resuelve dudas y conecta con el equipo cuando lo necesites.</p>
       </div>
       <div class="contacto-grid">
         <div class="contacto-info">
           <div class="contacto-item">
-            <div class="contacto-icon">📍</div>
+            <div class="contacto-icon">UB</div>
             <div>
-              <strong>Dirección</strong>
-              <p>Calle 10 # 5-32, Armenia, Quindío</p>
+              <strong>Direccion</strong>
+              <p>Calle 10 # 5-32, Armenia, Quindio</p>
             </div>
           </div>
           <div class="contacto-item">
-            <div class="contacto-icon">📞</div>
+            <div class="contacto-icon">TL</div>
             <div>
-              <strong>Teléfono</strong>
+              <strong>Telefono</strong>
               <p>+57 310 000 0000</p>
             </div>
           </div>
           <div class="contacto-item">
-            <div class="contacto-icon">✉️</div>
+            <div class="contacto-icon">EM</div>
             <div>
               <strong>Email</strong>
               <p>info@gymfitpro.co</p>
             </div>
           </div>
           <div class="contacto-item">
-            <div class="contacto-icon">🕐</div>
+            <div class="contacto-icon">HR</div>
             <div>
-              <strong>Horario de atención</strong>
-              <p>Lun–Sáb: 5:00 am – 10:00 pm</p>
-              <p>Domingo: 7:00 am – 2:00 pm</p>
+              <strong>Horario de atencion</strong>
+              <p>Lun-Sab: 5:00 am - 10:00 pm</p>
+              <p>Domingo: 7:00 am - 2:00 pm</p>
             </div>
           </div>
         </div>
+
         <form class="contacto-form" onsubmit="enviarContacto(event)">
-          <h3>Envíanos un mensaje</h3>
+          <h3>Envianos un mensaje</h3>
           <div id="alerta-contacto" class="alerta"></div>
           <input type="text" id="contacto-nombre" placeholder="Tu nombre" required />
           <input type="email" id="contacto-email" placeholder="Tu correo" required />
-          <textarea id="contacto-mensaje" rows="4" placeholder="¿En qué podemos ayudarte?" required></textarea>
+          <textarea id="contacto-mensaje" rows="4" placeholder="En que podemos ayudarte?" required></textarea>
           <button type="submit" class="btn-primary">Enviar mensaje</button>
         </form>
       </div>
     </div>
   </section>
 
-  <!-- ===== FOOTER ===== -->
   <footer>
     <div class="container">
       <div class="footer-logo">GymFit<span>Pro</span></div>
-      <p>© 2025 GymFitPro · Armenia, Quindío · Todos los derechos reservados</p>
+      <p>© 2025 GymFitPro · Armenia, Quindio · Todos los derechos reservados</p>
     </div>
   </footer>
 
-  <!-- ===== MODAL LOGIN / REGISTRO ===== -->
   <div id="modal-overlay" class="modal-overlay hidden" onclick="cerrarModal(event)">
     <div class="modal">
-      <button class="modal-close" onclick="cerrarModal()">✕</button>
+      <button class="modal-close" onclick="cerrarModal()">×</button>
       <div id="modal-contenido"></div>
     </div>
   </div>

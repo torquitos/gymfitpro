@@ -1,5 +1,16 @@
 const API_BASE_URL = 'http://localhost:3000/api';
 
+function splitPlanFeaturesText(descripcion = '') {
+  return descripcion
+    .split(/\r?\n/)
+    .map(item => item.trim())
+    .filter(Boolean);
+}
+
+function formatearPrecioCOP(precio) {
+  return new Intl.NumberFormat('es-CO').format(Number(precio) || 0);
+}
+
 function mostrarModal(tipo) {
   const overlay = document.getElementById('modal-overlay');
   const contenido = document.getElementById('modal-contenido');
@@ -7,37 +18,87 @@ function mostrarModal(tipo) {
 
   if (tipo === 'login') {
     contenido.innerHTML = `
-      <h3>Bienvenido de vuelta</h3>
-      <p class="subtitulo">Ingresa a tu cuenta GymFitPro</p>
-      <div id="alerta-login" class="alerta"></div>
-      <div class="modal-form">
-        <input type="email" id="login-email" placeholder="Correo electronico" required />
-        <input type="password" id="login-pass" placeholder="Contrasena" required />
-        <button class="btn-primary" onclick="iniciarSesion()">Iniciar sesion</button>
-      </div>
-      <div class="modal-switch">
-        ¿No tienes cuenta? <a onclick="mostrarModal('registro')">Registrate gratis</a>
+      <div class="modal-layout">
+        <div class="modal-intro">
+          <span class="modal-badge">Acceso cliente</span>
+          <h3>Bienvenido de vuelta</h3>
+          <p class="subtitulo">Ingresa a tu cuenta GymFitPro y retoma tu rutina sin perder el ritmo.</p>
+          <div class="modal-benefits">
+            <div class="modal-benefit">
+              <strong>Reserva rapido</strong>
+              <span>Consulta horarios y aparta tus clases desde tu panel.</span>
+            </div>
+            <div class="modal-benefit">
+              <strong>Todo en un lugar</strong>
+              <span>Plan, sesiones y reservas activas siempre a la mano.</span>
+            </div>
+          </div>
+        </div>
+        <div class="modal-form-panel">
+          <div id="alerta-login" class="alerta"></div>
+          <div class="modal-form">
+            <label class="modal-field">
+              <span>Correo electronico</span>
+              <input type="email" id="login-email" placeholder="tuusuario@email.com" required />
+            </label>
+            <label class="modal-field">
+              <span>Contrasena</span>
+              <input type="password" id="login-pass" placeholder="Ingresa tu contrasena" required />
+            </label>
+            <button class="btn-primary modal-submit" onclick="iniciarSesion()">Iniciar sesion</button>
+          </div>
+          <div class="modal-switch">
+            No tienes cuenta? <a onclick="mostrarModal('registro')">Registrate gratis</a>
+          </div>
+        </div>
       </div>`;
   } else {
     contenido.innerHTML = `
-      <h3>Crea tu cuenta</h3>
-      <p class="subtitulo">Unete a la familia GymFitPro</p>
-      <div id="alerta-registro" class="alerta"></div>
-      <div class="modal-form">
-        <input type="text" id="reg-nombre" placeholder="Nombre completo" required />
-        <input type="email" id="reg-email" placeholder="Correo electronico" required />
-        <input type="password" id="reg-pass" placeholder="Contrasena (min. 6 caracteres)" required />
-        <select id="reg-plan">
-          <option value="">Selecciona tu plan</option>
-          <option value="Basico">Basico - $49.900/mes</option>
-          <option value="Pro">Pro - $79.900/mes</option>
-          <option value="Elite">Elite - $119.900/mes</option>
-        </select>
-        <button class="btn-primary" onclick="registrarse()">Crear cuenta</button>
-      </div>
-      <div class="modal-switch">
-        ¿Ya tienes cuenta? <a onclick="mostrarModal('login')">Inicia sesion</a>
+      <div class="modal-layout">
+        <div class="modal-intro">
+          <span class="modal-badge">Nuevo usuario</span>
+          <h3>Crea tu cuenta</h3>
+          <p class="subtitulo">Unete a GymFitPro y empieza a gestionar tu plan, tus clases y tu progreso desde la plataforma.</p>
+          <div class="modal-benefits">
+            <div class="modal-benefit">
+              <strong>Elige tu membresia</strong>
+              <span>Selecciona el plan que mejor se adapte a tus objetivos.</span>
+            </div>
+            <div class="modal-benefit">
+              <strong>Reserva desde hoy</strong>
+              <span>Accede a clases, horarios y seguimiento desde tu perfil.</span>
+            </div>
+          </div>
+        </div>
+        <div class="modal-form-panel">
+          <div id="alerta-registro" class="alerta"></div>
+          <div class="modal-form">
+            <label class="modal-field">
+              <span>Nombre completo</span>
+              <input type="text" id="reg-nombre" placeholder="Escribe tu nombre" required />
+            </label>
+            <label class="modal-field">
+              <span>Correo electronico</span>
+              <input type="email" id="reg-email" placeholder="tuusuario@email.com" required />
+            </label>
+            <label class="modal-field">
+              <span>Contrasena</span>
+              <input type="password" id="reg-pass" placeholder="Minimo 6 caracteres" required />
+            </label>
+            <label class="modal-field">
+              <span>Plan</span>
+              <select id="reg-plan">
+                <option value="">Cargando planes...</option>
+              </select>
+            </label>
+            <button class="btn-primary modal-submit" onclick="registrarse()">Crear cuenta</button>
+          </div>
+          <div class="modal-switch">
+            Ya tienes cuenta? <a onclick="mostrarModal('login')">Inicia sesion</a>
+          </div>
+        </div>
       </div>`;
+    cargarPlanes();
   }
 }
 
@@ -104,30 +165,43 @@ function renderizarReservas(reservas, loggedIn) {
 
   if (!loggedIn) {
     contenedor.innerHTML = `
-      <div class="servicio-card">
+      <div class="reserva-card reserva-empty">
         <h4>Inicia sesion para ver tus reservas</h4>
-        <p>Aqui apareceran las clases apartadas con tu cuenta.</p>
+        <p>Cuando ingreses a tu cuenta, aqui aparecera tu agenda personal de clases.</p>
       </div>`;
     return;
   }
 
   if (!reservas.length) {
     contenedor.innerHTML = `
-      <div class="servicio-card">
+      <div class="reserva-card reserva-empty">
         <h4>Aun no tienes reservas</h4>
-        <p>Cuando reserves una clase desde la tabla de horarios, aparecera aqui.</p>
+        <p>Reserva una clase desde horarios y aqui veras tu proxima agenda de entrenamiento.</p>
       </div>`;
     return;
   }
 
   contenedor.innerHTML = reservas.map(reserva => `
-    <div class="servicio-card">
+    <div class="reserva-card ${reserva.estado === 'activa' ? 'reserva-card-active' : ''}">
+      <div class="reserva-card-top">
+        <span class="reserva-badge">${reserva.estado === 'activa' ? 'Reserva activa' : 'Reserva cerrada'}</span>
+        <span class="reserva-level">${reserva.nivel || 'Todos'}</span>
+      </div>
       <h4>${reserva.clase_nombre}</h4>
-      <p><strong>Dia:</strong> ${reserva.dia_semana}</p>
-      <p><strong>Hora:</strong> ${reserva.hora_inicio} - ${reserva.hora_fin}</p>
-      <p><strong>Entrenador:</strong> ${reserva.entrenador || 'Por asignar'}</p>
-      <p><strong>Nivel:</strong> ${reserva.nivel || 'Todos'}</p>
-      <p><strong>Estado:</strong> ${reserva.estado}</p>
+      <div class="reserva-meta-grid">
+        <div class="reserva-meta-item">
+          <span>Dia</span>
+          <strong>${reserva.dia_semana}</strong>
+        </div>
+        <div class="reserva-meta-item">
+          <span>Hora</span>
+          <strong>${reserva.hora_inicio} - ${reserva.hora_fin}</strong>
+        </div>
+        <div class="reserva-meta-item reserva-meta-item-full">
+          <span>Entrenador</span>
+          <strong>${reserva.entrenador || 'Por asignar'}</strong>
+        </div>
+      </div>
       ${reserva.estado === 'activa' ? `
         <button class="btn-cancelar-reserva" onclick="cancelarReserva(${reserva.id})">
           Cancelar reserva
@@ -146,7 +220,7 @@ function renderizarPerfilUsuario(sesion, reservas = []) {
     contenedor.innerHTML = `
       <div class="perfil-card perfil-empty">
         <h3>Inicia sesion para ver tu perfil</h3>
-        <p>Cuando entres con tu cuenta, aqui apareceran tus datos principales.</p>
+        <p>Cuando entres con tu cuenta, aqui aparecera tu resumen, tu plan y tu actividad reciente.</p>
       </div>`;
     return;
   }
@@ -154,11 +228,20 @@ function renderizarPerfilUsuario(sesion, reservas = []) {
   const reservasActivas = reservas.filter(reserva => reserva.estado === 'activa').length;
 
   contenedor.innerHTML = `
-    <div class="perfil-card">
-      <div class="perfil-mini-label">Cliente GymFitPro</div>
-      <div class="perfil-main-name">${sesion.nombre}</div>
-      <div class="perfil-email">${sesion.email}</div>
-      <span class="perfil-plan-badge">Plan ${sesion.plan}</span>
+    <div class="perfil-card perfil-card-main">
+      <div class="perfil-card-main-top">
+        <div>
+          <div class="perfil-mini-label">Cliente GymFitPro</div>
+          <div class="perfil-main-name">${sesion.nombre}</div>
+          <div class="perfil-email">${sesion.email}</div>
+        </div>
+        <div class="perfil-avatar">${sesion.nombre.charAt(0).toUpperCase()}</div>
+      </div>
+      <div class="perfil-plan-row">
+        <span class="perfil-plan-badge">Plan ${sesion.plan}</span>
+        <span class="perfil-chip">Cuenta activa</span>
+      </div>
+      <p class="perfil-summary">Tu espacio personal para consultar reservas, mantener tu plan al dia y organizar mejor tu entrenamiento semanal.</p>
     </div>
     <div class="perfil-card">
       <div class="perfil-mini-label">Reservas activas</div>
@@ -170,6 +253,73 @@ function renderizarPerfilUsuario(sesion, reservas = []) {
       <div class="perfil-stat-value">Activa</div>
       <div class="perfil-stat-text">Tu membresia esta disponible para seguir reservando clases.</div>
     </div>`;
+}
+
+function renderizarPlanes(planes) {
+  const contenedor = document.getElementById('planes-grid');
+
+  if (!contenedor) return;
+
+  if (!planes.length) {
+    contenedor.innerHTML = `
+      <div class="plan-card">
+        <h3>Sin planes activos</h3>
+        <div class="precio">$0<span>/mes</span></div>
+        <ul>
+          <li>Por ahora no hay membresias publicadas</li>
+        </ul>
+        <button class="btn-plan" onclick="mostrarModal('registro')">Solicitar informacion</button>
+      </div>`;
+    return;
+  }
+
+  const sortedPlans = [...planes].sort((a, b) => Number(a.precio) - Number(b.precio));
+  const featuredPlanId = sortedPlans[1]?.id || sortedPlans[0].id;
+
+  contenedor.innerHTML = planes.map(plan => {
+    const features = splitPlanFeaturesText(plan.descripcion || '');
+    const isFeatured = plan.id === featuredPlanId;
+
+    return `
+      <div class="plan-card ${isFeatured ? 'featured' : ''}">
+        ${isFeatured ? '<div class="popular-tag">Mas popular</div>' : ''}
+        <h3>${plan.nombre}</h3>
+        <div class="precio">$${formatearPrecioCOP(plan.precio)}<span>/mes</span></div>
+        <ul>
+          ${features.map(feature => `<li>${feature}</li>`).join('') || '<li>Plan disponible para ti</li>'}
+        </ul>
+        <button class="btn-plan" onclick="mostrarModal('registro')">Elegir plan</button>
+      </div>`;
+  }).join('');
+}
+
+function actualizarOpcionesPlanes(planes) {
+  const select = document.getElementById('reg-plan');
+
+  if (!select) return;
+
+  select.innerHTML = `
+    <option value="">Selecciona tu plan</option>
+    ${planes.map(plan => `
+      <option value="${plan.nombre}">${plan.nombre} - $${formatearPrecioCOP(plan.precio)}/mes</option>
+    `).join('')}`;
+}
+
+async function cargarPlanes() {
+  try {
+    const response = await fetch(`${API_BASE_URL}/planes`);
+    const data = await response.json();
+
+    if (!response.ok) {
+      renderizarPlanes([]);
+      return;
+    }
+
+    renderizarPlanes(data.planes || []);
+    actualizarOpcionesPlanes(data.planes || []);
+  } catch (error) {
+    renderizarPlanes([]);
+  }
 }
 
 async function cargarHorarios() {
@@ -257,7 +407,8 @@ async function registrarse() {
       id: data.user.id,
       nombre: data.user.nombre,
       email: data.user.email,
-      plan: data.user.plan
+      plan: data.user.plan,
+      rol: data.user.rol
     }));
 
     mostrarAlerta(alerta, 'exito', `Bienvenido, ${data.user.nombre}. Tu cuenta fue creada.`);
@@ -305,7 +456,8 @@ async function iniciarSesion() {
       id: data.user.id,
       nombre: data.user.nombre,
       email: data.user.email,
-      plan: data.user.plan
+      plan: data.user.plan,
+      rol: data.user.rol
     }));
 
     mostrarAlerta(alerta, 'exito', `Hola de nuevo, ${data.user.nombre}.`);
@@ -336,6 +488,7 @@ function actualizarNavbar() {
         Hola, <strong style="color:#fff">${sesion.nombre.split(' ')[0]}</strong>
         <span style="color:var(--rojo);font-size:11px;margin-left:6px">[${sesion.plan}]</span>
       </span>
+      ${sesion.rol === 'admin' ? '<a class="btn-login" href="admin.html">Panel admin</a>' : ''}
       <button class="btn-login" onclick="cerrarSesion()">Cerrar sesion</button>`;
   } else {
     navAuth.innerHTML = `
@@ -380,7 +533,7 @@ async function reservarClase(horarioId) {
 }
 
 async function cancelarReserva(reservaId) {
-  const confirmar = window.confirm('¿Seguro que quieres cancelar esta reserva?');
+  const confirmar = window.confirm('Seguro que quieres cancelar esta reserva?');
 
   if (!confirmar) return;
 
@@ -449,6 +602,7 @@ async function enviarContacto(e) {
 
 document.addEventListener('DOMContentLoaded', () => {
   actualizarNavbar();
+  cargarPlanes();
   cargarHorarios();
   cargarMisReservas();
 });

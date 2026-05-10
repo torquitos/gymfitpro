@@ -1,236 +1,239 @@
-# GymFit<span>Pro</span> 🏋️
+# GymFitPro
 
-> Sistema web fullstack para la gestión integral de gimnasios.  
-> Proyecto de Grado — Tecnología en Desarrollo de Software · Armenia, Quindío · 2025
+Sistema web para la gestion de un gimnasio, desarrollado como proyecto de grado.  
+Incluye sitio publico, autenticacion de usuarios, reservas de clases, panel de usuario y panel de administracion.
 
----
+## Descripcion
 
-## 📌 ¿Qué es GymFitPro?
+GymFitPro busca centralizar procesos comunes de un gimnasio en una sola plataforma:
 
-GymFitPro es una aplicación web completa que permite a un gimnasio gestionar todos sus procesos desde una sola plataforma: membresías, horarios de clases, entrenadores, reservas de usuarios y mensajes de contacto.
+- registro e inicio de sesion de clientes
+- visualizacion de planes, horarios y entrenadores
+- reservas y cancelacion de clases
+- envio de mensajes de contacto
+- administracion de usuarios, horarios, entrenadores y planes
 
-El sistema está dividido en tres capas bien separadas: un **frontend** visual y responsivo, un **backend** con API REST en Node.js, y una **base de datos** MySQL relacional.
+El proyecto esta construido con una arquitectura sencilla de tres capas:
 
----
+- frontend en `HTML`, `CSS` y `JavaScript`
+- backend en `Node.js` con `Express`
+- base de datos relacional en `MySQL`
 
-## ✅ Funcionalidades actuales
+## Modulos principales
 
-| Módulo | Estado |
-|---|---|
-| Página principal (Hero, Planes, Servicios) | ✅ Listo |
-| Tabla de horarios dinámica | ✅ Listo |
-| Sección de entrenadores | ✅ Listo |
-| Formulario de contacto | ✅ Listo |
-| Registro de usuarios | ✅ Listo |
-| Inicio y cierre de sesión | ✅ Listo |
-| Sistema de reservas de clases | ✅ Listo |
-| Sección "Mis Reservas" por usuario | ✅ Listo |
-| API REST (auth, horarios, reservas, contacto) | ✅ Listo |
-| Base de datos MySQL con 5 tablas | ✅ Listo |
-| Panel de administración | 🔧 En desarrollo |
-| Diseño responsivo móvil | ✅ Listo |
+- Sitio publico con informacion del gimnasio
+- Registro e inicio de sesion
+- Gestion de planes desde base de datos
+- Horarios dinamicos conectados al backend
+- Reservas de clases por usuario
+- Panel de usuario con perfil y reservas
+- Panel de administracion con gestion de:
+  - horarios
+  - entrenadores
+  - planes
+  - usuarios
 
----
+## Tecnologias utilizadas
 
-## 🛠️ Tecnologías utilizadas
+### Frontend
 
-**Frontend**
-- HTML5, CSS3, JavaScript (ES6+)
-- Variables CSS, CSS Grid, Flexbox
-- Fetch API para comunicación con el backend
+- HTML5
+- CSS3
+- JavaScript ES6+
+- Fetch API
 
-**Backend**
-- Node.js + Express.js
-- mysql2 (conexión a MySQL)
-- bcryptjs (hasheo de contraseñas)
-- cors + dotenv
+### Backend
 
-**Base de datos**
-- MySQL 8.x
-- Esquema relacional con 5 tablas y llaves foráneas
+- Node.js
+- Express
+- mysql2
+- cors
+- dotenv
 
----
+### Base de datos
 
-## 📁 Estructura del proyecto
+- MySQL 8
 
-```
+## Estructura del proyecto
+
+```text
 Proyecto de gymfitpro/
-│
-├── frontend/
-│   ├── Index.html         ← Página principal del sitio
-│   ├── Styles.css         ← Estilos globales y responsivos
-│   ├── app.js             ← Lógica del cliente (fetch, modales, sesión)
-│   ├── admin.html         ← Panel de administración (en desarrollo)
-│   └── admin.js           ← Lógica del panel admin (en desarrollo)
-│
 ├── backend/
 │   ├── src/
-│   │   └── routes/        ← Rutas de la API (auth, horarios, reservas, contacto)
-│   ├── .env               ← Variables de entorno (NO subir a GitHub)
-│   ├── index.js           ← Punto de entrada del servidor
-│   └── package.json       ← Dependencias del backend
-│
+│   │   ├── config/
+│   │   ├── routes/
+│   │   ├── app.js
+│   │   └── server.js
+│   ├── package.json
+│   └── .env
 ├── database/
-│   └── schema.sql         ← Script SQL para crear todas las tablas
-│
-├── .gitignore
+│   └── schema.sql
+├── frontend/
+├── admin.html
+├── admin.js
+├── app.js
+├── Index.html
+├── Styles.css
 └── README.md
 ```
 
----
+## Modelo de datos
 
-## 🗄️ Base de datos — Tablas principales
+La base de datos principal se compone de estas tablas:
 
-```
-usuarios            → id, nombre, email, password, plan, fecha_registro
-entrenadores        → id, nombre, especialidad, experiencia_anos, activo
-horarios            → id, clase_nombre, dia_semana, hora_inicio, hora_fin, entrenador_id, nivel
-reservas            → id, usuario_id, horario_id, fecha_reserva, estado
-contacto_mensajes   → id, nombre, email, mensaje, fecha_envio
-```
+- `planes`
+- `usuarios`
+- `entrenadores`
+- `horarios`
+- `reservas`
+- `mensajes_contacto`
 
-**Relaciones:**
-- `horarios.entrenador_id` → `entrenadores.id`
-- `reservas.usuario_id` → `usuarios.id`
-- `reservas.horario_id` → `horarios.id`
+Relaciones principales:
 
----
+- un usuario puede tener un plan
+- un horario puede tener un entrenador asignado
+- una reserva relaciona un usuario con un horario
 
-## 🌐 API REST — Endpoints
+## API del proyecto
 
-Base URL: `http://localhost:3000/api`
+La API se expone en:
 
-| Método | Ruta | Descripción |
-|---|---|---|
-| `POST` | `/api/auth/register` | Registrar nuevo usuario |
-| `POST` | `/api/auth/login` | Iniciar sesión |
-| `GET` | `/api/horarios` | Obtener todos los horarios con entrenador |
-| `GET` | `/api/reservas/:usuarioId` | Reservas de un usuario específico |
-| `POST` | `/api/reservas` | Crear una nueva reserva |
-| `POST` | `/api/contacto` | Guardar mensaje del formulario |
-
-### Ejemplo — Registro exitoso
-
-**Request:**
-```json
-POST /api/auth/register
-{
-  "nombre": "Juan Pérez",
-  "email": "juan@email.com",
-  "password": "123456",
-  "plan": "Pro"
-}
+```text
+http://localhost:3000/api
 ```
 
-**Response:**
-```json
-{
-  "message": "Usuario registrado correctamente",
-  "user": {
-    "id": 1,
-    "nombre": "Juan Pérez",
-    "email": "juan@email.com",
-    "plan": "Pro"
-  }
-}
-```
+Rutas principales disponibles:
 
----
+- autenticacion de usuarios
+- consulta de horarios
+- consulta de planes
+- reservas y cancelacion de reservas
+- contacto
+- panel administrativo
 
-## ⚙️ Instalación y ejecución local
+Nota:
+La documentacion tecnica detallada de endpoints puede mantenerse dentro del backend o migrarse luego a Swagger si el proyecto lo requiere.
 
-### 1. Requisitos previos
-- [Node.js](https://nodejs.org/) (versión LTS)
-- MySQL 8.x instalado y corriendo
-- Git
+## Requisitos
 
-### 2. Clonar el repositorio
+- Node.js LTS
+- MySQL 8 o superior
+- Visual Studio Code
+- Live Server o un navegador para abrir el frontend
+
+## Instalacion y ejecucion
+
+### 1. Clonar el repositorio
 
 ```bash
-git clone <url-del-repositorio>
-cd Proyecto-de-gymfitpro
+git clone https://github.com/torquitos/gymfitpro.git
+cd gymfitpro
 ```
 
-### 3. Instalar dependencias del backend
+### 2. Instalar dependencias del backend
 
 ```bash
 cd backend
 npm install
 ```
 
-### 4. Configurar variables de entorno
+### 3. Configurar variables de entorno
 
-Crea el archivo `backend/.env` con este contenido:
+Crea un archivo `.env` dentro de `backend/` con este contenido:
 
 ```env
-DB_HOST=localhost
-DB_USER=root
-DB_PASSWORD=tu_contraseña_mysql
-DB_NAME=gymfitpro
 PORT=3000
+DB_HOST=localhost
+DB_PORT=3306
+DB_USER=root
+DB_PASSWORD=tu_password
+DB_NAME=gymfitpro_db
 ```
 
-### 5. Crear la base de datos
+### 4. Crear la base de datos
 
-Abre MySQL y ejecuta:
+Ejecuta el archivo:
 
-```bash
-mysql -u root -p < database/schema.sql
+```text
+database/schema.sql
 ```
 
-Esto crea la base de datos `gymfitpro` con todas las tablas automáticamente.
+Ese script crea:
 
-### 6. Iniciar el servidor
+- la base de datos `gymfitpro_db`
+- las tablas principales
+- datos iniciales de planes, entrenadores, horarios y un usuario administrador de prueba
+
+### 5. Iniciar el backend
+
+Desde la carpeta `backend/`:
 
 ```bash
-cd backend
+npm run dev
+```
+
+o en produccion:
+
+```bash
 npm start
 ```
 
-Verifica que funcione abriendo en el navegador:
-```
+### 6. Verificar la API
+
+Abre en el navegador:
+
+```text
 http://localhost:3000/api/health
 ```
-Debe responder: `{ "status": "OK" }`
+
+Si todo esta bien, el backend respondera correctamente.
 
 ### 7. Abrir el frontend
 
-Abre `frontend/Index.html` con **Live Server** desde VS Code, o directamente desde el navegador.
+Abre `Index.html` con Live Server o desde tu navegador.
 
----
+Para el panel administrador:
 
-## 🔐 Seguridad
+```text
+admin.html
+```
 
-- Las contraseñas **nunca se guardan en texto plano**. Se usa `bcryptjs` para hashearlas antes de almacenarlas en MySQL.
-- Las variables sensibles (usuario y contraseña de la BD) se guardan en `.env` y ese archivo está en `.gitignore` para no subirse a GitHub.
-- La sesión del usuario se guarda en `localStorage` del navegador con los datos básicos (id, nombre, plan).
+## Acceso administrador de prueba
 
----
+El proyecto incluye un administrador de prueba creado por `schema.sql`:
 
-## 🗺️ Hoja de ruta — Próximas versiones
+- correo: `admin@gymfitpro.co`
+- contrasena: `admin123`
 
-| Versión | Funcionalidad |
-|---|---|
-| v1.0 | Frontend completo + API REST + Auth + Reservas ← **aquí estamos** |
-| v1.1 | Panel admin con CRUD completo de horarios, entrenadores y usuarios |
-| v1.2 | Envío de correo de confirmación al reservar (Nodemailer) |
-| v1.3 | Dashboard con estadísticas de asistencia y reservas por mes |
-| v2.0 | Integración con pasarela de pagos (Wompi / MercadoPago) |
-| v2.1 | App móvil complementaria (PWA o React Native) |
+## Estado actual del proyecto
 
----
+El sistema ya cuenta con una base funcional completa para demostracion academica:
 
-## 👥 Equipo
+- autenticacion real con base de datos
+- reservas funcionales
+- cancelacion de reservas
+- panel de usuario
+- panel de administracion
+- gestion de horarios, entrenadores y planes
 
-| Rol | Nombre |
-|---|---|
-| Desarrollador fullstack | Walter ramirez |
-| Institución | Sena |
+## Mejoras futuras
 
+- documentacion formal de la API con Swagger
+- panel de entrenador
+- reportes y estadisticas
+- notificaciones por correo
+- despliegue en hosting
+- mejoras de seguridad y control de sesiones
 
----
+## Repositorio
 
-## 📄 Licencia
+Codigo fuente:
 
-Este proyecto fue desarrollado como **trabajo de grado** académico.  
-Todos los derechos reservados © 2025 GymFitPro · Armenia, Quindío, Colombia.
+[https://github.com/torquitos/gymfitpro](https://github.com/torquitos/gymfitpro)
+
+## Autor
+
+- Walter Ramirez
+- Proyecto de grado
+- SENA
+
